@@ -1,0 +1,6 @@
+*.pem
+*.pub
+*.tfstate*
+tp.md
+git_token
+.terraform*
