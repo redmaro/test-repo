@@ -4,11 +4,12 @@ pipeline {
         ansiColor('xterm')
         // options
     }
-//
-//    parameters {
-//        // Parameters
-//    }
-//
+
+    parameters {
+        // Parameters
+        booleanParam(name: 'DESTROY', defaultValue: false, description: 'Destruction du précédent déploiement - terraform destroy')
+    }
+
     environment {
         // environment variables
         AWS_DEFAULT_REGION = 'us-east-1'
