@@ -7,7 +7,7 @@ pipeline {
 
     parameters {
         // Parameters
-        booleanParam(name: 'DESTROY', defaultValue: false, description: 'Destruction du précédent déploiement - terraform destroy')
+        booleanParam(name: 'Destroy', defaultValue: false, description: 'Destruction du précédent déploiement - terraform destroy')
     }
 
     environment {
@@ -17,6 +17,9 @@ pipeline {
 
     stages {
         stage('iac:terraform plan') {
+            when {
+                expression { params.Destroy == false }
+            }
             steps {
                 script {
                     sh '''
@@ -28,6 +31,9 @@ pipeline {
         }
 
         stage('confirm:deploy') {
+            when {
+                expression { params.Destroy == false }
+            }
             steps {
                 input(id: 'confirm', message: """
                     You choose to deploy:
@@ -37,7 +43,23 @@ pipeline {
             }
         }
 
+        stage('confirm:destroy') {
+            when {
+                expression { params.Destroy == true }
+            }
+            steps {
+                input(id: 'confirm', message: """
+                    You choose to destroy:
+                    - branch: ${env.GIT_BRANCH}
+                    Do you confirm the destruction
+                """)
+            }
+        }
+
         stage('iac:terraform apply') {
+            when {
+                expression { params.Destroy == false }
+            }
             steps {
                 script {
                     sh '''
@@ -47,6 +69,20 @@ pipeline {
                 }
             }
         }
+
+        stage('iac:terraform destroy') {
+            when {
+                expression { params.Destroy == true }
+            }
+            steps {
+                script {
+                    sh '''
+                        terraform init
+                        terraform destroy -auto-approve
+                    '''
+                }
+            }
+        }    
     }
 
     post { 
