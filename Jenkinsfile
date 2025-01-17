@@ -1,13 +1,13 @@
 pipeline {
     agent any
-    options {
-        // options
-    }
-
-    parameters {
-        // Parameters
-    }
-
+//    options {
+//        // options
+//    }
+//
+//    parameters {
+//        // Parameters
+//    }
+//
     environment {
         // environment variables
         AWS_DEFAULT_REGION = 'us-east-1'
