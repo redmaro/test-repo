@@ -14,6 +14,7 @@ pipeline {
     environment {
         // environment variables
         AWS_DEFAULT_REGION = 'us-east-1'
+        TF_VAR_env = "${params.env}"
     }
 
     stages {
@@ -23,24 +24,13 @@ pipeline {
                     sh '''
                     terraform init \
                       -backend-config="bucket=maro-tp-terraform-bucket" \
-                      -backend-config="key=terraform/state" \
+                      -backend-config="key=terraform/${TF_VAR_env}/state" \
                       -backend-config="region=us-east-1" \
-                      -backend-config="dynamodb_table=maro-dyndb"
+                      -backend-config="dynamodb_table=maro-dyndb-${TF_VAR_env}"
                     '''
                 }
             }
         }
-
-        stage('Terraform Plan') {
-            steps {
-                script {
-                    sh """
-                    terraform plan -var="env=${params.env}"
-                    """
-                }
-            }
-        }
-
 
         stage('confirm:deploy') {
             when {
