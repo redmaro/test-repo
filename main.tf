@@ -1,8 +1,8 @@
 module "network" {
   source           = "./modules/network"
-  project_name     = "tp-modules"
+  project_name     = var.project_name
   vpc_name         = "vpc-tp-modules"
-  env              = "dev"
+  env              = var.env
 }
 
 # Security Groups

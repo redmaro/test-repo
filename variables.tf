@@ -18,9 +18,9 @@ variable "region" {
 #   default = "172.16.2.0/24"
 # }
 # 
-# variable "project_name" {
-#   default = "tp-terraform"
-# }
+variable "project_name" {
+  default = "tp-modules"
+}
 
 variable "key_name" {
   description = "Nom de la clé SSH pour le bastion et l'application"
@@ -49,4 +49,8 @@ variable "ami" {
 
 variable "instance_type" {
   default = "t2.micro"
+}
+
+variable "env" {
+  default = "dev"
 }
