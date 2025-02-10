@@ -132,7 +132,7 @@ resource "aws_instance" "bastion1" {
 resource "aws_instance" "application1" {
   ami                    = var.ami
   instance_type          = var.instance_type
-  subnet_id              = aws_subnet.private1.id
+  subnet_id              = module.network.subnet_private1_id
   vpc_security_group_ids = [aws_security_group.application1.id]
 
 #  provisioner "remote-exec" {
