@@ -76,8 +76,7 @@ pipeline {
                 script {
                     sh '''
                         terraform init
-                        terraform apply -auto-approve
-                    '''
+                        terraform apply -var="env=${params.env}" -auto-approve                    '''
                 }
             }
         }
@@ -90,8 +89,7 @@ pipeline {
                 script {
                     sh '''
                         terraform init
-                        terraform destroy -auto-approve
-                    '''
+                        terraform destroy -var="env=${params.env}" -auto-approve                    '''
                 }
             }
         }    
