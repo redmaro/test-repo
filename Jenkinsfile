@@ -7,7 +7,7 @@ pipeline {
 
     parameters {
         // Parameters
-        choice(name: 'env' , choice ['prod', 'dev'], description)
+        choice(name: 'env', choices: ['prod', 'dev'], description: 'Choisir l’environnement')
         booleanParam(name: 'Destroy', defaultValue: false, description: 'Destruction du précédent déploiement - terraform destroy')
     }
 
