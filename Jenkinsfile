@@ -17,23 +17,30 @@ pipeline {
     }
 
     stages {
-        stage('iac:terraform plan') {
-            when {
-                expression { params.Destroy == false }
-            }
+        stage('Terraform Init') {
             steps {
                 script {
                     sh '''
-                        terraform init \
-                            -backend-config="bucket=maro-tp-terraform-bucket" \
-                            -backend-config="key=terraform/${TF_VAR_env}state" \
-                            -backend-config="region=$AWS_DEFAULT_REGION" \
-                            -backend-config="dynamodb_table=maro-dyndb"
-                        terraform plan
+                    terraform init \
+                      -backend-config="bucket=maro-tp-terraform-bucket" \
+                      -backend-config="key=terraform/state" \
+                      -backend-config="region=us-east-1" \
+                      -backend-config="dynamodb_table=maro-dyndb"
                     '''
                 }
             }
         }
+
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    sh """
+                    terraform plan -var="env=${params.env}"
+                    """
+                }
+            }
+        }
+
 
         stage('confirm:deploy') {
             when {
