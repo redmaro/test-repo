@@ -7,7 +7,7 @@ module "network" {
 
 # Security Groups
 resource "aws_security_group" "bastion1" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.network.vpc_id
 
   ingress {
     from_port   = 22
@@ -29,7 +29,7 @@ resource "aws_security_group" "bastion1" {
 }
 
 resource "aws_security_group" "application1" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.network.vpc_id
 
   ingress {
     from_port       = 22
@@ -58,7 +58,7 @@ resource "aws_security_group" "application1" {
 }
 
 resource "aws_security_group" "load_balancer1" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.network.vpc_id
 
   ingress {
     from_port   = 80
@@ -98,7 +98,7 @@ resource "tls_private_key" "admin_key" {
 resource "aws_instance" "bastion1" {
   ami                    = var.ami
   instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public1.id
+  subnet_id              = module.network.subnet_public1_id
   vpc_security_group_ids = [aws_security_group.bastion1.id]
   key_name               = var.key_name
 
@@ -175,7 +175,7 @@ resource "aws_lb" "main1" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load_balancer1.id]
-  subnets            = [aws_subnet.public1.id, aws_subnet.public2.id]
+  subnets            = [module.network.subnet_public1_id, module.network.subnet_public2_id]
 
   tags = {
     Name        = "${var.project_name}-load-balancer1"
@@ -187,7 +187,7 @@ resource "aws_lb_target_group" "application1" {
   name     = "${var.project_name}-tg1"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = module.network.vpc_id
 
   health_check {
     path                = "/"

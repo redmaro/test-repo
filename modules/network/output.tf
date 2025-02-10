@@ -15,7 +15,7 @@ output "subnet_public2_id" {
 
 output "subnet_private1_id" {
   description = "ID du subnet privé"
-  value       = aws_subnet.private1.id
+  value       = module.network.subnet_private1_id
 }
 
 output "internet_gateway_id" {
