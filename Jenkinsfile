@@ -28,7 +28,7 @@ pipeline {
                             -backend-config="bucket=maro-tp-terraform-bucket" \
                             -backend-config="key=terraform/${TF_VAR_env}/state" \
                             -backend-config="region=$AWS_DEFAULT_REGION" \
-                            -backend-config="dynamodb_table=terraform-${TF_VAR_env}"
+                            -backend-config="dynamodb_table=maro-dyndb"
                         terraform plan
                     '''
                 }
