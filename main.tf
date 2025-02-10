@@ -2,7 +2,7 @@
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
   tags = {
-    Name = "${var.project_name}-vpc"
+    Name = "${var.project_name}-${var.env}-vpc"
   }
 }
 
@@ -15,8 +15,7 @@ resource "aws_subnet" "public1" {
   map_public_ip_on_launch = true
   availability_zone       = "us-east-1a"
   tags = {
-    Name        = "${var.project_name}-subnet-public1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-subnet-public1"
   }
 }
 
@@ -26,8 +25,7 @@ resource "aws_subnet" "public2" {
   map_public_ip_on_launch = true
   availability_zone       = "us-east-1b"
   tags = {
-    Name        = "${var.project_name}-subnet-public2"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-subnet-public2"
   }
 }
 
@@ -37,8 +35,7 @@ resource "aws_subnet" "private1" {
   map_public_ip_on_launch = false
   availability_zone       = "us-east-1a"
   tags = {
-    Name        = "${var.project_name}-subnet-private1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-subnet-private1"
   }
 }
 
@@ -48,16 +45,14 @@ resource "aws_subnet" "private1" {
 resource "aws_internet_gateway" "igw1" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name        = "${var.project_name}-igw1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-igw1"
   }
 }
 
 resource "aws_eip" "nat1" {
   domain = "vpc"
   tags = {
-    Name        = "${var.project_name}-eip-nat1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-eip-nat1"
   }
 }
 
@@ -65,8 +60,7 @@ resource "aws_nat_gateway" "nat1" {
   allocation_id = aws_eip.nat1.id
   subnet_id     = aws_subnet.public1.id
   tags = {
-    Name        = "${var.project_name}-nat-gateway1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-nat-gateway1"
   }
 }
 
@@ -76,16 +70,14 @@ resource "aws_nat_gateway" "nat1" {
 resource "aws_route_table" "public1" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name        = "${var.project_name}-route-table-public1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-route-table-public1"
   }
 }
 
 resource "aws_route_table" "private1" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name        = "${var.project_name}-route-table-private1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-route-table-private1"
   }
 }
 
@@ -135,8 +127,7 @@ resource "aws_security_group" "bastion1" {
   }
 
   tags = {
-    Name        = "${var.project_name}-sg-bastion1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-sg-bastion1"
   }
 }
 
@@ -165,8 +156,7 @@ resource "aws_security_group" "application1" {
   }
 
   tags = {
-    Name        = "${var.project_name}-sg-application1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-sg-application1"
   }
 }
 
@@ -195,8 +185,7 @@ resource "aws_security_group" "load_balancer1" {
   }
 
   tags = {
-    Name        = "${var.project_name}-sg-load-balancer1"
-    Environment = "production"
+    Name        = "${var.project_name}-${var.env}-sg-load-balancer1"
   }
 }
 

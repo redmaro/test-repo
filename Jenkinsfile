@@ -7,6 +7,7 @@ pipeline {
 
     parameters {
         // Parameters
+        choice(name: 'env' , choice ['prod', 'dev'], description)
         booleanParam(name: 'Destroy', defaultValue: false, description: 'Destruction du précédent déploiement - terraform destroy')
     }
 
@@ -23,7 +24,11 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        terraform init
+                        terraform init \
+                            -backend-config="bucket=maro" \
+                            -backend-config="key=terraform/${TF_VAR_env}/state" \
+                            -backend-config="region=$AWS_DEFAULT_REGION" \
+                            -backend-config="dynamodb_table=terraform-${TF_VAR_env}"
                         terraform plan
                     '''
                 }
