@@ -205,24 +205,24 @@ resource "aws_instance" "bastion1" {
   vpc_security_group_ids = [aws_security_group.bastion1.id]
   key_name               = var.key_name
 
-  provisioner "file" {
-    content     = tls_private_key.admin_key.private_key_pem
-    destination = "/home/ec2-user/.ssh/id_rsa"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod 400 /home/ec2-user/.ssh/id_rsa",
-      "echo 'Key added to bastion.'"
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = tls_private_key.admin_key.private_key_pem
-    host        = self.public_ip
-  }
+#  provisioner "file" {
+#    content     = tls_private_key.admin_key.private_key_pem
+#    destination = "/home/ec2-user/.ssh/id_rsa"
+#  }
+#
+#  provisioner "remote-exec" {
+#    inline = [
+#      "chmod 400 /home/ec2-user/.ssh/id_rsa",
+#      "echo 'Key added to bastion.'"
+#    ]
+#  }
+#
+#  connection {
+#    type        = "ssh"
+#    user        = "ec2-user"
+#    private_key = tls_private_key.admin_key.private_key_pem
+#    host        = self.public_ip
+#  }
 
   associate_public_ip_address = true
 
