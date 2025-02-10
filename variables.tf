@@ -1,26 +1,26 @@
-variable "region" {
-  default = "us-east-1"
-}
-
-variable "vpc_cidr" {
-  default = "172.16.0.0/16"
-}
-
-variable "subnet_public1_cidr" {
-  default = "172.16.0.0/24"
-}
-
-variable "subnet_public2_cidr" {
-  default = "172.16.1.0/24"
-}
-
-variable "subnet_private1_cidr" {
-  default = "172.16.2.0/24"
-}
-
-variable "project_name" {
-  default = "tp-terraform"
-}
+# variable "region" {
+#   default = "us-east-1"
+# }
+# 
+# variable "vpc_cidr" {
+#   default = "172.16.0.0/16"
+# }
+# 
+# variable "subnet_public1_cidr" {
+#   default = "172.16.0.0/24"
+# }
+# 
+# variable "subnet_public2_cidr" {
+#   default = "172.16.1.0/24"
+# }
+# 
+# variable "subnet_private1_cidr" {
+#   default = "172.16.2.0/24"
+# }
+# 
+# variable "project_name" {
+#   default = "tp-terraform"
+# }
 
 variable "key_name" {
   description = "Nom de la clé SSH pour le bastion et l'application"
@@ -50,5 +50,3 @@ variable "ami" {
 variable "instance_type" {
   default = "t2.micro"
 }
-
-variable "env" {}
