@@ -14,6 +14,7 @@ pipeline {
     environment {
         // environment variables
         AWS_DEFAULT_REGION = 'us-east-1'
+        TF_VAR_env = "${params.env}"
     }
 
     stages {
@@ -23,9 +24,9 @@ pipeline {
                     sh '''
                     terraform init \
                       -backend-config="bucket=maro-tp-terraform-bucket" \
-                      -backend-config="key=terraform/${params.env}/state" \
+                      -backend-config="key=terraform/${TF_VAR_env}/state" \
                       -backend-config="region=us-east-1" \
-                      -backend-config="dynamodb_table=maro-dyndb-${params.env}"
+                      -backend-config="dynamodb_table=maro-dyndb-${TF_VAR_env}"
                     '''
                 }
             }
@@ -64,8 +65,12 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        terraform init
-                        terraform apply -var="env=${params.env}" -auto-approve                    '''
+                    terraform init \
+                      -backend-config="bucket=maro-tp-terraform-bucket" \
+                      -backend-config="key=terraform/${TF_VAR_env}/state" \
+                      -backend-config="region=us-east-1" \
+                      -backend-config="dynamodb_table=maro-dyndb-${TF_VAR_env}"
+                        terraform apply -auto-approve                    '''
                 }
             }
         }
@@ -77,8 +82,12 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        terraform init
-                        terraform destroy -var="env=${params.env}" -auto-approve                    '''
+                    terraform init \
+                      -backend-config="bucket=maro-tp-terraform-bucket" \
+                      -backend-config="key=terraform/${TF_VAR_env}/state" \
+                      -backend-config="region=us-east-1" \
+                      -backend-config="dynamodb_table=maro-dyndb-${TF_VAR_env}"
+                        terraform destroy -auto-approve                    '''
                 }
             }
         }    
