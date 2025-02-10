@@ -24,7 +24,7 @@ variable "project_name" {
 
 variable "key_name" {
   description = "Nom de la clé SSH pour le bastion et l'application"
-  default     = "my-keypair"
+  default     = "vockey"
 }
 
 variable "private_key_path" {

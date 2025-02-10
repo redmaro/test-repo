@@ -18,8 +18,8 @@ provider "aws" {
   region = var.region
 }
 
-default-tags {
-    tags = {
-      env = var.env
-    }
-}
+#default-tags {
+#    tags = {
+#      env = var.env
+#    }
+#}
